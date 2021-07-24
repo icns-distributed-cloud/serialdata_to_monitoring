@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title>home</title>
+
+    <style>
+        .building-img {
+            color: white;
+            width: 750px;
+            height: 500px;
+            background-image: url("../static/css/img/building3.png");
+            background-position: center;
+            background-size: cover;
+
+            border-radius: 10px;
+            text-align: center;
+            padding-top: 40px;
+        }
+
+
+
+    </style>
+
+
+</head>
+<body>
+<div class="building-img">
+
+
+    <p>
+        <button style="background-color: green">7층</button>
+    </p>
+    <br>
+    <p>
+        <button style="background-color: green">6층</button>
+    </p>
+    <br>
+    <div id="button" class="button">
+        <p>
+
+
+            <button id="five" style="background-color: green" onclick="five()">5층</button>
+
+
+    </div>
+
+    </p>
+    <br>
+    <p>
+        <button style="background-color: green">4층</button>
+    </p>
+    <br>
+    <p>
+        <button style="background-color: green">3층</button>
+    </p>
+    <br>
+    <p>
+        <button style="background-color: green">2층</button>
+    </p>
+    <br>
+    <p>
+        <button style="background-color: green">1층</button>
+    </p>
+
+
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+
+<script>
+
+     const source = new EventSource("/test");
+
+     source.onmessage = function (event) {
+        const data = JSON.parse(event.data)
+        if (data.temp>40){
+            document.getElementById("five").style.background="red"
+           }
+        else {
+            document.getElementById("five").style.background="green"}
+
+
+        console.log(data)};
+
+    function five() {window.location.href = './five';}
+
+</script>
+</body>
+</html>
