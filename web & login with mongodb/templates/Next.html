@@ -97,16 +97,16 @@
     $(document).ready(function () {
 
             if ($.cookie('token') == undefined) {
-                // mytoken이라는 값으로 쿠키가 없으면, 로그인 창으로 이동시킵니다.
+                // mytoken이라는 값으로 쿠키가 없으면, 로그인 창으로 이동
                 alert('먼저 로그인을 해주세요')
                 window.location.href = '/Login'
             } else {
-                // 쿠기가 있으면, 유저 정보를 불러옵니다.
+                // 쿠기가 있으면, 유저 정보를 불러옴
                 load_user_info()
             }
         });
 
-        // 쿠키에 가지고 있는 token을 헤더에 담아서 보냅니다.
+        // 쿠키에 가지고 있는 token을 헤더에 담아서 보냄.
         function load_user_info() {
             $.ajax({
                 type: "GET",
@@ -118,7 +118,7 @@
 
                         $('#ID').text(response['ID'])
                     } else {
-                        // 에러가 나면 메시지를 띄우고 로그인 창으로 이동합니다.
+                        // 에러가 나면 메시지를 띄우고 로그인 창으로 이동
                         alert(response['msg'])
                         window.location.href = '/Login'
                     }
@@ -126,7 +126,7 @@
             })
         }
 
-        // 로그아웃은 내가 가지고 있는 토큰만 쿠키에서 없애면 됩니다.
+        // 로그아웃은 내가 가지고 있는 토큰만 쿠키에서 없애면 됨
         function logout() {
             $.removeCookie('token');
             alert('로그아웃!')
