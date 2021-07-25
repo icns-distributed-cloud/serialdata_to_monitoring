@@ -1,0 +1,178 @@
+<html>
+<head>
+    <title>로그인 화면</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <!-- Bootstrap CSS -->
+    <!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"-->
+    <!--          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
+
+    <!-- JS-->
+    <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
+
+    <!-- 쿠키 사용을 위한 Jquery-cookie 임포트 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css?family=Do+Hyeon&display=swap" rel="stylesheet">
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+        });
+
+        // 회원가입
+        function makesign() {
+            let ID = $("#ID").val();
+            let Password = $("#Password").val();
+            let Passwordcheck = $("#Passwordcheck").val();
+
+            if (ID == "") {
+                alert("아이디를 입력해주세요");
+                $("#ID").focus();
+                return;
+            } else if (Password == "") {
+                alert("비밀번호를 입력하세요");
+                $("#Password").focus();
+                return;
+            } else if (Passwordcheck == "") {
+                alert("비밀번호를 확인하세요");
+                $("#Passwordcheck").focus();
+                return;
+            }
+
+
+            $.ajax({
+                type: "POST",
+                url: "/api/signup",
+                data: {ID_give: ID, Password_give: Password, Passwordcheck_give: Passwordcheck},
+                success: function (response) {
+                    if (response["result"] == "success") {
+                        alert('회원가입이 완료되었습니다');
+                        window.location.reload()
+                    } else {
+                        alert(response['msg'])
+                        window.location.reload()
+                    }
+                }
+            })
+        }
+
+
+        // 로그인
+        function Login() {
+            $.ajax({
+                type: "POST",
+                url: "/api/Login",
+                data: {ID_give: $('#ID1').val(), Password_give: $('#Password1').val()},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+
+                        // 이 토큰을 token이라는 키 값으로 쿠키에 저장
+                        $.cookie('token', response['token']);
+                        alert('로그인 완료!')
+                        window.location.href = '/'
+                    } else {
+                        // 로그인이 안되면 에러메시지
+                        alert(response['msg'])
+                        window.location.reload()
+                    }
+                }
+            })
+        }
+
+        $(function () {
+            $("#alert-success").hide();
+            $("#alert-fail").hide();
+            $("input").keyup(function () {
+                var Password = $("#Password").val();
+                var Passwordcheck = $("#Passwordcheck").val();
+                if (Password != "" || Passwordcheck != "") {
+                    if (Password == Passwordcheck) {
+                        $("#alert-success").show();
+                        $("#alert-fail").hide();
+                        $("#submit").removeAttr("disabled");
+                    } else {
+                        $("#alert-success").hide();
+                        $("#alert-fail").show();
+                        $("#submit").attr("disabled", "disabled");
+                    }
+                }
+            });
+        });
+
+
+    </script>
+
+</head>
+<body>
+<div class="wrap">
+    <div class="form-wrap">
+        <div class="button-wrap">
+            <div id="btn"></div>
+            <button type="button" class="togglebtn" onclick="login()">로그인</button>
+            <button type="button" class="togglebtn" onclick="register()">회원가입</button>
+        </div>
+        <form id="login" action="" class="input-group">
+            <input type="text" ID="ID1" class="input-field" placeholder="아이디를 입력하세요" required>
+            <input type="password" ID="Password1" class="input-field" placeholder="비밀번호를 입력하세요" required>
+            <input type="checkbox" class="checkbox"><span>Remember Password</span>
+            <button onclick="Login()" class="submit">로그인</button>
+        </form>
+        <form id="register" action="" class="input-group">
+            <input type="text" class="input-field" id="ID" name="ID" placeholder="아이디를 입력하세요" required/>
+            <!--            <button type="button" class="submit" id="joongbok" onclick="overlap()">중복확인</button>-->
+            <input type="password" class="input-field" id="Password" placeholder="비밀번호를 입력하세요" required>
+            <input type="password" class="input-field" id="Passwordcheck" placeholder="비밀번호를 재입력하세요" required>
+            <div class="input-group" id="alert-success" style="color:blue">비밀번호가 일치합니다.</div>
+            <div class="input-group" id="alert-fail" style="color:red">비밀번호가 일치하지 않습니다.</div>
+<!--            <input type="checkbox" class="checkbox"><span>Terms and conditions</span>-->
+
+            <br><br>
+            <br><br>
+
+            <button onclick="makesign()" class="submit">회원가입</button>
+        </form>
+    </div>
+</div>
+<script>
+    var x = document.getElementById("login");
+    var y = document.getElementById("register");
+    var z = document.getElementById("btn");
+
+
+    function login() {
+        x.style.left = "50px";
+        y.style.left = "450px";
+        z.style.left = "0";
+    }
+
+    function register() {
+        x.style.left = "-400px";
+        y.style.left = "50px";
+        z.style.left = "110px";
+    }
+</script>
+</body>
+</html>

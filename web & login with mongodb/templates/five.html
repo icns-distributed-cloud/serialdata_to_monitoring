@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title>floor</title>
+    <style>
+        .building-img {
+            color: white;
+            width: 750px;
+            height: 500px;
+            background-image: url("../static/css/img/floor.png");
+            background-position: center;
+            background-size: cover;
+
+            border-radius: 10px;
+            text-align: center;
+            padding-top: 40px;
+        }
+
+    </style>
+
+    <script>
+
+
+    </script>
+
+</head>
+<body>
+<div class="building-img">
+    <br><br><br>
+
+
+    <button onclick="CCTV();monitoring()">501호</button>
+
+    <button>502호</button>
+    <button>503호</button>
+    <button>504호</button>
+    <button>505호</button>
+    <br><br><br>
+    <button>506호</button>
+    <button>507호</button>
+    <button>508호</button>
+    <button>509호</button>
+    <button>510호</button>
+    <button>511호</button>
+</div>
+
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+
+<script>
+
+    function monitoring() {window.location.href = './5-monitoring';}
+    function CCTV() {
+    var CCTVUrl = "5-CCTV";
+    var CCTVOption = "top=10, left=10, width=500, height=600, status=no, menubar=no, toolbar=no, resizable=no";
+    window.open(CCTVUrl, CCTVOption);
+}
+
+
+</script>
+</html>

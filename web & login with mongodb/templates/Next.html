@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title>home</title>
+
+    <style>
+        .building-img {
+            color: white;
+            width: 750px;
+            height: 500px;
+            background-image: url("../static/css/img/building3.png");
+            background-position: center;
+            background-size: cover;
+
+            border-radius: 10px;
+            text-align: center;
+            padding-top: 40px;
+        }
+
+
+
+
+    </style>
+
+
+</head>
+<body>
+<div class="building-img">
+
+
+    <p>
+        <button style="background-color: green">7층</button>
+    </p>
+    <br>
+    <p>
+        <button style="background-color: green">6층</button>
+    </p>
+    <br>
+    <div id="button" class="button">
+        <p>
+
+
+            <button id="five" style="background-color: green" onclick="five()">5층</button>
+
+
+    </div>
+
+    </p>
+    <br>
+    <p>
+        <button style="background-color: green">4층</button>
+    </p>
+    <br>
+    <p>
+        <button style="background-color: green">3층</button>
+    </p>
+    <br>
+    <p>
+        <button style="background-color: green">2층</button>
+    </p>
+    <br>
+    <p>
+        <button style="background-color: green">1층</button>
+    </p>
+
+
+    <p class="logout"><a id="logout" href="#" onclick="logout()">로그아웃</a></p>
+
+
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<!-- JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
+        integrity="sha256-yr4fRk/GU1ehYJPAs8P4JlTgu0Hdsp4ZKrx8bDEDC3I="
+        crossorigin="anonymous"></script>
+
+<script>
+    $(document).ready(function () {
+
+            if ($.cookie('token') == undefined) {
+                // mytoken이라는 값으로 쿠키가 없으면, 로그인 창으로 이동시킵니다.
+                alert('먼저 로그인을 해주세요')
+                window.location.href = '/Login'
+            } else {
+                // 쿠기가 있으면, 유저 정보를 불러옵니다.
+                load_user_info()
+            }
+        });
+
+        // 쿠키에 가지고 있는 token을 헤더에 담아서 보냅니다.
+        function load_user_info() {
+            $.ajax({
+                type: "GET",
+                url: "/api/Next",
+                headers: {'token_give': $.cookie('token')},
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+
+                        $('#ID').text(response['ID'])
+                    } else {
+                        // 에러가 나면 메시지를 띄우고 로그인 창으로 이동합니다.
+                        alert(response['msg'])
+                        window.location.href = '/Login'
+                    }
+                }
+            })
+        }
+
+        // 로그아웃은 내가 가지고 있는 토큰만 쿠키에서 없애면 됩니다.
+        function logout() {
+            $.removeCookie('token');
+            alert('로그아웃!')
+            window.location.href = '/Login'
+        }
+
+
+
+
+     const source = new EventSource("/test");
+
+     source.onmessage = function (event) {
+        const data = JSON.parse(event.data)
+        if (data.temp>40){
+            document.getElementById("five").style.background="red"
+           }
+        else {
+            document.getElementById("five").style.background="green"}
+
+
+        console.log(data)};
+
+    function five() {window.location.href = './five';}
+
+
+</script>
+</body>
+</html>
